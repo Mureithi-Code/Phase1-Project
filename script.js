@@ -117,6 +117,26 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchComments(selectedCategory); // Refresh comments display
     }
 
+    //Edit a specific comment by id
+    async function editComment(commentId) {
+        const commentToEdit = await fetch(`${COMMENTS_URL}/${commentId}`);
+        const commentData = await commentToEdit.json();
+        const newCommentText = prompt("Edit your comment:", commentData.comment);
+        if (newCommentText) {
+            commentData.comment = newCommentText;
+            await fetch(`${COMMENTS_URL}/${commentId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(commentData),
+            });
+
+            const selectedCategory = genreFilter.value;
+            fetchComments(selectedCategory);
+        }
+    }
+
     //Fetch comment for the selected category
     async function fetchComments(category) {
         const response = await fetch(COMMENTS_URL);
@@ -129,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const commentDiv = document.createElement("div");
                 commentDiv.innerHTML = `
                     <p>${comment.comment}</p>
+                    <button class="editButton" data-id="${comment.id}">Edit</button>
                     <button class="deleteButton" data-id="${comment.id}">Delete</button>
                     `;
                 commentsDisplay.appendChild(commentDiv);
@@ -137,7 +158,17 @@ document.addEventListener("DOMContentLoaded", () => {
             commentsDisplay.innerHTML = `<p>No comments for this category yet.</p>`;
         }
 
-          // Add event listeners for delete button
+          // Add event listeners for edit and delete button
+        const editButton = document.querySelectorAll(".editButton");
+        editButton.forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                const commentId = button.getAttribute("data-id");
+                editComment(commentId);
+            });
+        });
+
         const deleteButton = document.querySelectorAll(".deleteButton");
         deleteButton.forEach(button => {
             button.addEventListener("click", (event) => {
