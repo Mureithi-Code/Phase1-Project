@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentForm = document.getElementById("commentForm");
 
     //Define API URLs
-    const API_URL = "http://localhost:3000/knights"; // Local JSON server
-    const COMMENTS_URL = "http://localhost:3000/comments"; // Comments endpoint
+    const API_URL = "http://localhost:3000/knights"; 
+    const COMMENTS_URL = "http://localhost:3000/comments"; 
     const WIKI_SEARCH_URL = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=";
     const WIKI_DETAIL_URL = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=&explaintext=&titles=";
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedCategory = genreFilter.value;
         const knights = await fetchKnights();
 
-        let filteredKnights; //Initialize filtered knights array
+        let filteredKnights; 
         //Filter knights based on the selected category
         if (selectedCategory === "All") {
             filteredKnights = Object.values(knights.Historical)
@@ -49,12 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         displayKnights(filteredKnights);
-        fetchComments(selectedCategory); // Fetch comments for the selected category
+        fetchComments(selectedCategory); 
     }
 
     //Display knight cards in the gallery
     function displayKnights(knights) {
-        knightGallery.innerHTML = ""; // Clear previous knights
+        knightGallery.innerHTML = ""; 
         knights.forEach(knight => {
             const knightCard = document.createElement("div");
             knightCard.className = "knightCard";
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const searchData = await searchResponse.json();
 
         if (searchData.query.search.length > 0) {
-            const pageTitle = searchData.query.search[0].title; // First matching title
+            const pageTitle = searchData.query.search[0].title; 
             const detailResponse = await fetch(WIKI_DETAIL_URL + encodeURIComponent(pageTitle) + "&format=json&origin=*");
             const detailData = await detailResponse.json();
 
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (commentText) {
             // Create a new comment object
             const newComment = { 
-                id: Date.now().toString(), // Generate a unique ID
+                id: Date.now().toString(), 
                 category: selectedCategory, 
                 comment: commentText 
             };
@@ -101,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify(newComment),
             });
-            commentInput.value = ""; // Clear the input
-            fetchComments(selectedCategory); // Refresh comments display
+            commentInput.value = ""; 
+            fetchComments(selectedCategory); 
         }
     }
 
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "DELETE",
         });
         const selectedCategory = genreFilter.value;
-        fetchComments(selectedCategory); // Refresh comments display
+        fetchComments(selectedCategory); 
     }
 
     //Edit a specific comment by id
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const comments = await response.json();
         const filteredComments = comments.filter(comment => comment.category === category);
         
-        commentsDisplay.innerHTML = ""; // Clear previous comments
+        commentsDisplay.innerHTML = ""; 
         if (filteredComments.length > 0) {
             filteredComments.forEach(comment => {
                 const commentDiv = document.createElement("div");
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
                 event.stopPropagation();
                 const commentId = button.getAttribute("data-id");
-                deleteComment(commentId); // Call deleteComment with the ID
+                deleteComment(commentId); 
             });
         });
     }
