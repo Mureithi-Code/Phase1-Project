@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const knightGallery = document.getElementById("knightGallery");
     const knightDetails = document.getElementById("knightDetails");
     const refreshButton = document.getElementById("refreshButton");
-    //const commentInput = document.getElementById("commentInput");
-    //const submitComment = document.getElementById("submitComment");
     const commentsDisplay = document.getElementById("commentsDisplay");
     const commentForm = document.getElementById("commentForm");
 
